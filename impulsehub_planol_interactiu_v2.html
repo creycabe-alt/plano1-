@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -30,16 +29,16 @@
     margin: 0 0 20px;
   }
   svg { display: block; width: 100%; height: auto; }
- 
+
   .room { cursor: pointer; }
   .room rect { transition: stroke-width 0.15s ease, opacity 0.15s ease, fill 0.15s ease; }
   .room:hover rect { stroke-width: 2.5; opacity: 0.92; }
- 
+
   .fill-green { fill: #EAF3DE; stroke: #639922; }
   .fill-gray { fill: #F1EFE8; stroke: #B4B2A9; }
   .fill-purple { fill: #EEEDFE; stroke: #7F77DD; }
   .fill-amber { fill: #FAEEDA; stroke: #BA7517; }
- 
+
   .th { font-size: 14px; font-weight: 500; }
   .ts { font-size: 12px; }
   .th-gray, .ts-gray { fill: #444441; }
@@ -47,7 +46,7 @@
   .th-amber, .ts-amber { fill: #633806; }
   .th-green { fill: #27500A; }
   .ts-green { fill: #27500A; }
- 
+
   .legend {
     display: flex;
     gap: 16px;
@@ -59,7 +58,7 @@
   }
   .legend span.item { display: inline-flex; align-items: center; gap: 6px; }
   .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
- 
+
   #info-panel {
     background: #FFFFFF;
     border: 1px solid #E3E0D6;
@@ -110,33 +109,69 @@
     padding: 0;
     margin-left: 10px;
   }
+  #company-field {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #E3E0D6;
+  }
+  #company-field label {
+    font-size: 12px;
+    color: #5F5E5A;
+    display: block;
+    margin-bottom: 4px;
+  }
+  #company-row {
+    display: flex;
+    gap: 6px;
+  }
+  #company-input {
+    flex: 1;
+    padding: 7px 9px;
+    border: 1px solid #B4B2A9;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #1E2A38;
+  }
+  #company-save {
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: 1px solid #639922;
+    background: #EAF3DE;
+    color: #27500A;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  #company-save:hover { background: #C0DD97; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>ImpulseHub · Sant Cugat Nord</h1>
-  <p class="sub">Passa el cursor per un despatx per veure els detalls. Clica'l per seleccionar-lo i poder marcar-lo com a ocupat o disponible amb el botó de sota.</p>
- 
+  <p class="sub">Passa el cursor per un despatx per veure els detalls. Clica'l per seleccionar-lo i poder marcar-lo com a ocupat, o escriure el nom de l'empresa.</p>
+
   <svg viewBox="0 0 680 630" role="img" aria-label="Plànol de la primera planta amb 17 despatxos numerats, tres sales de reunions i quatre cabines telefòniques">
     <rect x="10" y="10" width="650" height="605" rx="16" fill="none" stroke="#B4B2A9" stroke-width="1"/>
- 
+
     <g>
       <rect class="fill-gray" x="215" y="20" width="240" height="200" rx="8" stroke-width="0.5"/>
       <text class="th th-gray" x="335" y="105" text-anchor="middle" dominant-baseline="central">Nucli</text>
       <text class="ts ts-gray" x="335" y="127" text-anchor="middle" dominant-baseline="central">Escala · ascensors · lavabos</text>
     </g>
- 
+
     <g>
       <rect class="fill-purple" x="334" y="262" width="150" height="65" rx="8" stroke-width="0.5"/>
       <text class="th th-purple" x="409" y="284" text-anchor="middle" dominant-baseline="central">Sala 3</text>
       <text class="ts ts-purple" x="409" y="305" text-anchor="middle" dominant-baseline="central">reunions</text>
     </g>
- 
+
     <g>
       <rect class="fill-gray" x="150" y="335" width="335" height="170" rx="8" stroke-width="0.5" stroke-dasharray="4 3"/>
       <text class="th th-gray" x="400" y="400" text-anchor="middle" dominant-baseline="central">Open space</text>
     </g>
- 
+
     <g>
       <rect class="fill-purple" x="160" y="345" width="100" height="55" rx="8" stroke-width="0.5"/>
       <text class="th th-purple" x="210" y="366" text-anchor="middle" dominant-baseline="central">Sala 1</text>
@@ -147,7 +182,7 @@
       <text class="th th-purple" x="210" y="433" text-anchor="middle" dominant-baseline="central">Sala 2</text>
       <text class="ts ts-purple" x="210" y="453" text-anchor="middle" dominant-baseline="central">reunions</text>
     </g>
- 
+
     <g>
       <rect class="fill-amber" x="270" y="345" width="40" height="26" rx="5" stroke-width="0.5"/>
       <text class="ts ts-amber" x="290" y="358" text-anchor="middle" dominant-baseline="central">T1</text>
@@ -164,7 +199,7 @@
       <rect class="fill-amber" x="270" y="441" width="40" height="26" rx="5" stroke-width="0.5"/>
       <text class="ts ts-amber" x="290" y="454" text-anchor="middle" dominant-baseline="central">T4</text>
     </g>
- 
+
     <g class="room" onmouseenter="previewInfo(3)" onmouseleave="restoreInfo()" onclick="selectRoom(3)">
       <rect id="rect-3" class="fill-green" x="20" y="262" width="110" height="150" rx="8" stroke-width="0.5"/>
       <text id="title-3" class="th th-green" x="75" y="326" text-anchor="middle" dominant-baseline="central">Despatx 3</text>
@@ -175,7 +210,7 @@
       <text id="title-4" class="th th-green" x="75" y="501" text-anchor="middle" dominant-baseline="central">Despatx 4</text>
       <text id="sub-4" class="ts ts-green" x="75" y="523" text-anchor="middle" dominant-baseline="central">30,80 m²</text>
     </g>
- 
+
     <g class="room" onmouseenter="previewInfo(2)" onmouseleave="restoreInfo()" onclick="selectRoom(2)">
       <rect id="rect-2" class="fill-green" x="138" y="262" width="85" height="65" rx="8" stroke-width="0.5"/>
       <text id="title-2" class="th th-green" x="180" y="284" text-anchor="middle" dominant-baseline="central">2</text>
@@ -186,7 +221,7 @@
       <text id="title-1" class="th th-green" x="278" y="284" text-anchor="middle" dominant-baseline="central">1</text>
       <text id="sub-1" class="ts ts-green" x="278" y="305" text-anchor="middle" dominant-baseline="central">10,55 m²</text>
     </g>
- 
+
     <g class="room" onmouseenter="previewInfo(17)" onmouseleave="restoreInfo()" onclick="selectRoom(17)">
       <rect id="rect-17" class="fill-green" x="525" y="30" width="120" height="69" rx="8" stroke-width="0.5"/>
       <text id="title-17" class="th th-green" x="585" y="53" text-anchor="middle" dominant-baseline="central">Despatx 17</text>
@@ -217,7 +252,7 @@
       <text id="title-12" class="th th-green" x="585" y="465" text-anchor="middle" dominant-baseline="central">Despatx 12</text>
       <text id="sub-12" class="ts ts-green" x="585" y="486" text-anchor="middle" dominant-baseline="central">15,50 m²</text>
     </g>
- 
+
     <g class="room" onmouseenter="previewInfo(5)" onmouseleave="restoreInfo()" onclick="selectRoom(5)">
       <rect id="rect-5" class="fill-green" x="138" y="513" width="47" height="84" rx="8" stroke-width="0.5"/>
       <text id="title-5" class="th th-green" x="161" y="555" text-anchor="middle" dominant-baseline="central">5</text>
@@ -248,13 +283,13 @@
       <text id="sub-11" class="ts ts-green" x="585" y="567" text-anchor="middle" dominant-baseline="central">27,80 m²</text>
     </g>
   </svg>
- 
+
   <div class="legend">
     <span class="item"><span class="swatch" style="background:#639922"></span>Disponible</span>
     <span class="item"><span class="swatch" style="background:#E24B4A"></span>Ocupat</span>
     <span class="item"><span class="swatch" style="background:#B4B2A9"></span>Zona comuna, no arrendable</span>
   </div>
- 
+
   <div id="info-panel">
     <p id="info-default">Passa el cursor per un despatx per veure els detalls.</p>
     <div id="info-content" style="display:none">
@@ -266,43 +301,52 @@
         </span>
       </div>
       <table>
+        <tr><td class="label">Empresa</td><td class="value" id="info-company">—</td></tr>
         <tr><td class="label">Superfície</td><td class="value" id="info-m2">10,55 m²</td></tr>
         <tr><td class="label">Aforament</td><td class="value" id="info-cap">2 persones</td></tr>
         <tr><td class="label">Preu (68 €/m²)</td><td class="value price" id="info-price">717 €/mes</td></tr>
       </table>
       <button id="toggle-btn" onclick="handleToggleClick()">Marca com a ocupat</button>
+      <div id="company-field">
+        <label for="company-input">Nom de l'empresa inquilina</label>
+        <div id="company-row">
+          <input id="company-input" type="text" placeholder="Ex: Fluidra SA">
+          <button id="company-save" onclick="saveCompany()">Desa</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
- 
+
 <script>
 const roomData = {
-  1:{m2:10.55,price:717,cap:"2 persones",status:"Ocupat"},
-  2:{m2:15.00,price:1020,cap:"2 persones",status:"Disponible"},
-  3:{m2:32.50,price:2210,cap:"8-9 persones (10 no recomanable)",status:"Disponible"},
-  4:{m2:30.80,price:2094,cap:"8-9 persones (10 no recomanable)",status:"Disponible"},
-  5:{m2:11.90,price:809,cap:"2 persones (fins a 3)",status:"Disponible"},
-  6:{m2:11.00,price:748,cap:"2 persones",status:"Disponible"},
-  7:{m2:18.00,price:1224,cap:"4-5 persones",status:"Disponible"},
-  8:{m2:14.65,price:996,cap:"4-5 persones",status:"Disponible"},
-  9:{m2:13.00,price:884,cap:"4-5 persones",status:"Disponible"},
-  10:{m2:9.70,price:660,cap:"2 persones",status:"Disponible"},
-  11:{m2:27.80,price:1890,cap:"5-6 persones",status:"Disponible"},
-  12:{m2:15.50,price:1054,cap:"2-3 persones",status:"Disponible"},
-  13:{m2:16.00,price:1088,cap:"2-3 persones",status:"Disponible"},
-  14:{m2:27.00,price:1836,cap:"5-6 persones",status:"Disponible"},
-  15:{m2:19.20,price:1306,cap:"3-4 persones",status:"Disponible"},
-  16:{m2:19.20,price:1306,cap:"3-4 persones",status:"Disponible"},
-  17:{m2:16.80,price:1142,cap:"2-3 persones",status:"Disponible"}
+  1:{m2:10.55,price:717,cap:"2 persones",status:"Ocupat",company:""},
+  2:{m2:15.00,price:1020,cap:"2 persones",status:"Disponible",company:""},
+  3:{m2:32.50,price:2210,cap:"8-9 persones (10 no recomanable)",status:"Disponible",company:""},
+  4:{m2:30.80,price:2094,cap:"8-9 persones (10 no recomanable)",status:"Disponible",company:""},
+  5:{m2:11.90,price:809,cap:"2 persones (fins a 3)",status:"Disponible",company:""},
+  6:{m2:11.00,price:748,cap:"2 persones",status:"Disponible",company:""},
+  7:{m2:18.00,price:1224,cap:"4-5 persones",status:"Disponible",company:""},
+  8:{m2:14.65,price:996,cap:"4-5 persones",status:"Disponible",company:""},
+  9:{m2:13.00,price:884,cap:"4-5 persones",status:"Disponible",company:""},
+  10:{m2:9.70,price:660,cap:"2 persones",status:"Disponible",company:""},
+  11:{m2:27.80,price:1890,cap:"5-6 persones",status:"Disponible",company:""},
+  12:{m2:15.50,price:1054,cap:"2-3 persones",status:"Disponible",company:""},
+  13:{m2:16.00,price:1088,cap:"2-3 persones",status:"Disponible",company:""},
+  14:{m2:27.00,price:1836,cap:"5-6 persones",status:"Disponible",company:""},
+  15:{m2:19.20,price:1306,cap:"3-4 persones",status:"Disponible",company:""},
+  16:{m2:19.20,price:1306,cap:"3-4 persones",status:"Disponible",company:""},
+  17:{m2:16.80,price:1142,cap:"2-3 persones",status:"Disponible",company:""}
 };
- 
+
 let selectedRoom = null;
- 
+
 function renderInfo(n, isSelected) {
   const d = roomData[n];
   document.getElementById('info-default').style.display = 'none';
   document.getElementById('info-content').style.display = 'block';
   document.getElementById('info-title').textContent = 'Despatx ' + n;
+  document.getElementById('info-company').textContent = d.company ? d.company : '—';
   document.getElementById('info-m2').textContent = d.m2.toFixed(2).replace('.', ',') + ' m²';
   document.getElementById('info-cap').textContent = d.cap;
   document.getElementById('info-price').textContent = d.price.toLocaleString('ca-ES') + ' €/mes';
@@ -317,20 +361,24 @@ function renderInfo(n, isSelected) {
   }
   const btn = document.getElementById('toggle-btn');
   const closeBtn = document.getElementById('close-selection');
+  const companyField = document.getElementById('company-field');
   if (isSelected) {
     btn.style.display = 'block';
     btn.textContent = d.status === 'Ocupat' ? 'Marca com a disponible' : 'Marca com a ocupat';
     closeBtn.style.display = 'inline';
+    companyField.style.display = 'block';
+    document.getElementById('company-input').value = d.company || '';
   } else {
     btn.style.display = 'none';
     closeBtn.style.display = 'none';
+    companyField.style.display = 'none';
   }
 }
- 
+
 function previewInfo(n) {
   renderInfo(n, false);
 }
- 
+
 function restoreInfo() {
   if (selectedRoom) {
     renderInfo(selectedRoom, true);
@@ -339,23 +387,31 @@ function restoreInfo() {
     document.getElementById('info-content').style.display = 'none';
   }
 }
- 
+
 function selectRoom(n) {
   selectedRoom = n;
   renderInfo(n, true);
 }
- 
+
 function deselectRoom() {
   selectedRoom = null;
   document.getElementById('info-default').style.display = 'block';
   document.getElementById('info-content').style.display = 'none';
 }
- 
+
 function handleToggleClick() {
   if (!selectedRoom) return;
   toggleStatus(selectedRoom);
 }
- 
+
+function saveCompany() {
+  if (!selectedRoom) return;
+  const val = document.getElementById('company-input').value.trim();
+  roomData[selectedRoom].company = val;
+  try { localStorage.setItem('ih_company_' + selectedRoom, val); } catch (e) {}
+  renderInfo(selectedRoom, true);
+}
+
 function updateRoomColor(n) {
   const d = roomData[n];
   const colors = d.status === 'Ocupat'
@@ -368,7 +424,7 @@ function updateRoomColor(n) {
   const sub = document.getElementById('sub-' + n);
   if (sub) { sub.style.fill = colors.text; }
 }
- 
+
 function toggleStatus(n) {
   const d = roomData[n];
   d.status = d.status === 'Ocupat' ? 'Disponible' : 'Ocupat';
@@ -376,19 +432,20 @@ function toggleStatus(n) {
   updateRoomColor(n);
   renderInfo(n, true);
 }
- 
+
 function loadSavedStatuses() {
   Object.keys(roomData).forEach(function (n) {
     try {
-      const saved = localStorage.getItem('ih_status_' + n);
-      if (saved) { roomData[n].status = saved; }
+      const savedStatus = localStorage.getItem('ih_status_' + n);
+      if (savedStatus) { roomData[n].status = savedStatus; }
+      const savedCompany = localStorage.getItem('ih_company_' + n);
+      if (savedCompany) { roomData[n].company = savedCompany; }
     } catch (e) {}
     updateRoomColor(n);
   });
 }
- 
+
 window.addEventListener('DOMContentLoaded', loadSavedStatuses);
 </script>
 </body>
 </html>
- 
