@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ImpulseHub - Plànol interactiu primera planta</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px;
+    background: #F4F1EA;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1E2A38;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 4px;
+    color: #1E2A38;
+  }
+  p.sub {
+    font-size: 14px;
+    color: #5F5E5A;
+    margin: 0 0 20px;
+  }
+  svg { display: block; width: 100%; height: auto; }
+
+  .room { cursor: pointer; }
+  .room rect { transition: stroke-width 0.15s ease, opacity 0.15s ease; }
+  .room:hover rect { stroke-width: 2.5; opacity: 0.92; }
+
+  .fill-green { fill: #EAF3DE; stroke: #639922; }
+  .fill-red { fill: #FCEBEB; stroke: #E24B4A; }
+  .fill-gray { fill: #F1EFE8; stroke: #B4B2A9; }
+  .fill-purple { fill: #EEEDFE; stroke: #7F77DD; }
+  .fill-amber { fill: #FAEEDA; stroke: #BA7517; }
+
+  .th { font-size: 14px; font-weight: 500; }
+  .ts { font-size: 12px; }
+  .th-green, .ts-green { fill: #27500A; }
+  .th-red, .ts-red { fill: #791F1F; }
+  .th-gray, .ts-gray { fill: #444441; }
+  .th-purple, .ts-purple { fill: #3C3489; }
+  .th-amber, .ts-amber { fill: #633806; }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin: 14px 0;
+    font-size: 13px;
+    color: #5F5E5A;
+    flex-wrap: wrap;
+  }
+  .legend span.item { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+  #info-panel {
+    background: #FFFFFF;
+    border: 1px solid #E3E0D6;
+    border-radius: 12px;
+    padding: 16px 20px;
+    min-height: 100px;
+  }
+  #info-default { color: #5F5E5A; font-size: 14px; margin: 0; }
+  .info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  #info-title { font-size: 15px; font-weight: 500; }
+  #info-status {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+  table { width: 100%; font-size: 13px; border-collapse: collapse; }
+  table td { padding: 4px 0; }
+  td.label { color: #5F5E5A; }
+  td.value { text-align: right; }
+  td.price { font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ImpulseHub · Sant Cugat Nord</h1>
+  <p class="sub">Plànol interactiu de la primera planta. Passa el cursor (o toca en mòbil) per veure superfície, aforament, preu i disponibilitat.</p>
+
+  <svg viewBox="0 0 680 630" role="img" aria-label="Plànol de la primera planta amb 17 despatxos numerats, tres sales de reunions i quatre cabines telefòniques">
+    <rect x="10" y="10" width="650" height="605" rx="16" fill="none" stroke="#B4B2A9" stroke-width="1"/>
+
+    <g>
+      <rect class="fill-gray" x="215" y="20" width="240" height="200" rx="8" stroke-width="0.5"/>
+      <text class="th th-gray" x="335" y="105" text-anchor="middle" dominant-baseline="central">Nucli</text>
+      <text class="ts ts-gray" x="335" y="127" text-anchor="middle" dominant-baseline="central">Escala · ascensors · lavabos</text>
+    </g>
+
+    <g>
+      <rect class="fill-purple" x="334" y="262" width="150" height="65" rx="8" stroke-width="0.5"/>
+      <text class="th th-purple" x="409" y="284" text-anchor="middle" dominant-baseline="central">Sala 3</text>
+      <text class="ts ts-purple" x="409" y="305" text-anchor="middle" dominant-baseline="central">reunions</text>
+    </g>
+
+    <g>
+      <rect class="fill-gray" x="150" y="335" width="335" height="170" rx="8" stroke-width="0.5" stroke-dasharray="4 3"/>
+      <text class="th th-gray" x="400" y="400" text-anchor="middle" dominant-baseline="central">Open space</text>
+    </g>
+
+    <g>
+      <rect class="fill-purple" x="160" y="345" width="100" height="55" rx="8" stroke-width="0.5"/>
+      <text class="th th-purple" x="210" y="366" text-anchor="middle" dominant-baseline="central">Sala 1</text>
+      <text class="ts ts-purple" x="210" y="386" text-anchor="middle" dominant-baseline="central">reunions</text>
+    </g>
+    <g>
+      <rect class="fill-purple" x="160" y="412" width="100" height="55" rx="8" stroke-width="0.5"/>
+      <text class="th th-purple" x="210" y="433" text-anchor="middle" dominant-baseline="central">Sala 2</text>
+      <text class="ts ts-purple" x="210" y="453" text-anchor="middle" dominant-baseline="central">reunions</text>
+    </g>
+
+    <g>
+      <rect class="fill-amber" x="270" y="345" width="40" height="26" rx="5" stroke-width="0.5"/>
+      <text class="ts ts-amber" x="290" y="358" text-anchor="middle" dominant-baseline="central">T1</text>
+    </g>
+    <g>
+      <rect class="fill-amber" x="270" y="377" width="40" height="26" rx="5" stroke-width="0.5"/>
+      <text class="ts ts-amber" x="290" y="390" text-anchor="middle" dominant-baseline="central">T2</text>
+    </g>
+    <g>
+      <rect class="fill-amber" x="270" y="409" width="40" height="26" rx="5" stroke-width="0.5"/>
+      <text class="ts ts-amber" x="290" y="422" text-anchor="middle" dominant-baseline="central">T3</text>
+    </g>
+    <g>
+      <rect class="fill-amber" x="270" y="441" width="40" height="26" rx="5" stroke-width="0.5"/>
+      <text class="ts ts-amber" x="290" y="454" text-anchor="middle" dominant-baseline="central">T4</text>
+    </g>
+
+    <g class="room" onmouseenter="showInfo(3)" onmouseleave="clearInfo()" onclick="showInfo(3)">
+      <rect class="fill-green" x="20" y="262" width="110" height="150" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="75" y="326" text-anchor="middle" dominant-baseline="central">Despatx 3</text>
+      <text class="ts ts-green" x="75" y="348" text-anchor="middle" dominant-baseline="central">32,50 m²</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(4)" onmouseleave="clearInfo()" onclick="showInfo(4)">
+      <rect class="fill-green" x="20" y="420" width="110" height="184" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="75" y="501" text-anchor="middle" dominant-baseline="central">Despatx 4</text>
+      <text class="ts ts-green" x="75" y="523" text-anchor="middle" dominant-baseline="central">30,80 m²</text>
+    </g>
+
+    <g class="room" onmouseenter="showInfo(2)" onmouseleave="clearInfo()" onclick="showInfo(2)">
+      <rect class="fill-green" x="138" y="262" width="85" height="65" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="180" y="284" text-anchor="middle" dominant-baseline="central">2</text>
+      <text class="ts ts-green" x="180" y="305" text-anchor="middle" dominant-baseline="central">15,00 m²</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(1)" onmouseleave="clearInfo()" onclick="showInfo(1)">
+      <rect class="fill-red" x="231" y="262" width="95" height="65" rx="8" stroke-width="0.5"/>
+      <text class="th th-red" x="278" y="284" text-anchor="middle" dominant-baseline="central">1</text>
+      <text class="ts ts-red" x="278" y="305" text-anchor="middle" dominant-baseline="central">10,55 m²</text>
+    </g>
+
+    <g class="room" onmouseenter="showInfo(17)" onmouseleave="clearInfo()" onclick="showInfo(17)">
+      <rect class="fill-green" x="525" y="30" width="120" height="69" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="585" y="53" text-anchor="middle" dominant-baseline="central">Despatx 17</text>
+      <text class="ts ts-green" x="585" y="74" text-anchor="middle" dominant-baseline="central">16,80 m²</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(16)" onmouseleave="clearInfo()" onclick="showInfo(16)">
+      <rect class="fill-green" x="525" y="107" width="120" height="72" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="585" y="131" text-anchor="middle" dominant-baseline="central">Despatx 16</text>
+      <text class="ts ts-green" x="585" y="152" text-anchor="middle" dominant-baseline="central">19,20 m²</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(15)" onmouseleave="clearInfo()" onclick="showInfo(15)">
+      <rect class="fill-green" x="525" y="187" width="120" height="73" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="585" y="211" text-anchor="middle" dominant-baseline="central">Despatx 15</text>
+      <text class="ts ts-green" x="585" y="232" text-anchor="middle" dominant-baseline="central">19,20 m²</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(14)" onmouseleave="clearInfo()" onclick="showInfo(14)">
+      <rect class="fill-green" x="525" y="268" width="120" height="105" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="585" y="308" text-anchor="middle" dominant-baseline="central">Despatx 14</text>
+      <text class="ts ts-green" x="585" y="329" text-anchor="middle" dominant-baseline="central">27,00 m²</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(13)" onmouseleave="clearInfo()" onclick="showInfo(13)">
+      <rect class="fill-green" x="525" y="381" width="120" height="58" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="585" y="399" text-anchor="middle" dominant-baseline="central">Despatx 13</text>
+      <text class="ts ts-green" x="585" y="420" text-anchor="middle" dominant-baseline="central">16,00 m²</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(12)" onmouseleave="clearInfo()" onclick="showInfo(12)">
+      <rect class="fill-green" x="525" y="447" width="120" height="58" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="585" y="465" text-anchor="middle" dominant-baseline="central">Despatx 12</text>
+      <text class="ts ts-green" x="585" y="486" text-anchor="middle" dominant-baseline="central">15,50 m²</text>
+    </g>
+
+    <g class="room" onmouseenter="showInfo(5)" onmouseleave="clearInfo()" onclick="showInfo(5)">
+      <rect class="fill-green" x="138" y="513" width="47" height="84" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="161" y="555" text-anchor="middle" dominant-baseline="central">5</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(6)" onmouseleave="clearInfo()" onclick="showInfo(6)">
+      <rect class="fill-green" x="193" y="513" width="38" height="84" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="212" y="555" text-anchor="middle" dominant-baseline="central">6</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(7)" onmouseleave="clearInfo()" onclick="showInfo(7)">
+      <rect class="fill-green" x="239" y="513" width="60" height="84" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="269" y="555" text-anchor="middle" dominant-baseline="central">7</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(8)" onmouseleave="clearInfo()" onclick="showInfo(8)">
+      <rect class="fill-green" x="307" y="513" width="60" height="84" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="337" y="555" text-anchor="middle" dominant-baseline="central">8</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(9)" onmouseleave="clearInfo()" onclick="showInfo(9)">
+      <rect class="fill-green" x="375" y="513" width="56" height="84" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="403" y="555" text-anchor="middle" dominant-baseline="central">9</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(10)" onmouseleave="clearInfo()" onclick="showInfo(10)">
+      <rect class="fill-green" x="439" y="513" width="45" height="84" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="461" y="555" text-anchor="middle" dominant-baseline="central">10</text>
+    </g>
+    <g class="room" onmouseenter="showInfo(11)" onmouseleave="clearInfo()" onclick="showInfo(11)">
+      <rect class="fill-green" x="525" y="513" width="120" height="84" rx="8" stroke-width="0.5"/>
+      <text class="th th-green" x="585" y="546" text-anchor="middle" dominant-baseline="central">Despatx 11</text>
+      <text class="ts ts-green" x="585" y="567" text-anchor="middle" dominant-baseline="central">27,80 m²</text>
+    </g>
+  </svg>
+
+  <div class="legend">
+    <span class="item"><span class="swatch" style="background:#639922"></span>Disponible</span>
+    <span class="item"><span class="swatch" style="background:#E24B4A"></span>Ocupat</span>
+    <span class="item"><span class="swatch" style="background:#B4B2A9"></span>Zona comuna, no arrendable</span>
+  </div>
+
+  <div id="info-panel">
+    <p id="info-default">Passa el cursor per un despatx per veure els detalls.</p>
+    <div id="info-content" style="display:none">
+      <div class="info-header">
+        <span id="info-title">Despatx 1</span>
+        <span id="info-status">Disponible</span>
+      </div>
+      <table>
+        <tr><td class="label">Superfície</td><td class="value" id="info-m2">10,55 m²</td></tr>
+        <tr><td class="label">Aforament</td><td class="value" id="info-cap">2 persones</td></tr>
+        <tr><td class="label">Preu (68 €/m²)</td><td class="value price" id="info-price">717 €/mes</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const roomData = {
+  1:{m2:10.55,price:717,cap:"2 persones",status:"Ocupat"},
+  2:{m2:15.00,price:1020,cap:"2 persones",status:"Disponible"},
+  3:{m2:32.50,price:2210,cap:"8-9 persones (10 no recomanable)",status:"Disponible"},
+  4:{m2:30.80,price:2094,cap:"8-9 persones (10 no recomanable)",status:"Disponible"},
+  5:{m2:11.90,price:809,cap:"2 persones (fins a 3)",status:"Disponible"},
+  6:{m2:11.00,price:748,cap:"2 persones",status:"Disponible"},
+  7:{m2:18.00,price:1224,cap:"4-5 persones",status:"Disponible"},
+  8:{m2:14.65,price:996,cap:"4-5 persones",status:"Disponible"},
+  9:{m2:13.00,price:884,cap:"4-5 persones",status:"Disponible"},
+  10:{m2:9.70,price:660,cap:"2 persones",status:"Disponible"},
+  11:{m2:27.80,price:1890,cap:"5-6 persones",status:"Disponible"},
+  12:{m2:15.50,price:1054,cap:"2-3 persones",status:"Disponible"},
+  13:{m2:16.00,price:1088,cap:"2-3 persones",status:"Disponible"},
+  14:{m2:27.00,price:1836,cap:"5-6 persones",status:"Disponible"},
+  15:{m2:19.20,price:1306,cap:"3-4 persones",status:"Disponible"},
+  16:{m2:19.20,price:1306,cap:"3-4 persones",status:"Disponible"},
+  17:{m2:16.80,price:1142,cap:"2-3 persones",status:"Disponible"}
+};
+
+function showInfo(n) {
+  const d = roomData[n];
+  document.getElementById('info-default').style.display = 'none';
+  document.getElementById('info-content').style.display = 'block';
+  document.getElementById('info-title').textContent = 'Despatx ' + n;
+  document.getElementById('info-m2').textContent = d.m2.toFixed(2).replace('.', ',') + ' m²';
+  document.getElementById('info-cap').textContent = d.cap;
+  document.getElementById('info-price').textContent = d.price.toLocaleString('ca-ES') + ' €/mes';
+  const statusEl = document.getElementById('info-status');
+  statusEl.textContent = d.status;
+  if (d.status === 'Ocupat') {
+    statusEl.style.background = '#FCEBEB';
+    statusEl.style.color = '#791F1F';
+  } else {
+    statusEl.style.background = '#EAF3DE';
+    statusEl.style.color = '#27500A';
+  }
+}
+
+function clearInfo() {
+  document.getElementById('info-default').style.display = 'block';
+  document.getElementById('info-content').style.display = 'none';
+}
+</script>
+</body>
+</html>
